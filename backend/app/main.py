@@ -4,7 +4,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.database import init_db
-from app.routers import directories, devices, storage
+from app.routers import api_keys, directories, devices, storage
 
 
 @asynccontextmanager
@@ -25,6 +25,7 @@ app.add_middleware(
 
 app.include_router(storage.router, prefix="/api")
 app.include_router(devices.router, prefix="/api")
+app.include_router(api_keys.router, prefix="/api")
 app.include_router(directories.router, prefix="/api")
 
 

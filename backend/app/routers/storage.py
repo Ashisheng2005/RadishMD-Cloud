@@ -31,9 +31,9 @@ async def _track_device(db: AsyncSession, device_code: str, client_host: str | N
 
 
 @router.post("/auth/verify")
-async def verify_auth(body: dict):
+async def verify_auth(body: dict, db: AsyncSession = Depends(get_db)):
     api_key = body.get("api_key", "")
-    if not verify_api_key(api_key):
+    if not await verify_api_key(api_key, db):
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Invalid API key",

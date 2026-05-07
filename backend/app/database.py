@@ -20,8 +20,13 @@ async def get_db():
 
 
 async def init_db():
+    from app.models.api_key import ApiKey  # noqa: F401
     from app.models.device import Device  # noqa: F401
     from app.models.directory import Directory  # noqa: F401
+    from app.services.auth import seed_api_keys
 
     async with engine.begin() as conn:
         await conn.run_sync(Base.metadata.create_all)
+
+    async with async_session_maker() as session:
+        await seed_api_keys(session)
